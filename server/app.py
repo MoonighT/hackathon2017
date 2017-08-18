@@ -82,6 +82,11 @@ def process_message(message):
 			process_attachment(sender_id, attachment)
 		return
 
+	quick_reply = parser.parse_json(message_body, "quick_reply")
+	if quick_reply:
+		bot_client.send_text_message(sender_id, "OK! Thanks!")
+		return
+
 	# process message
 	bot_client.send_text_message(sender_id, "Hi there, this is what I can do for you:")
 	bot_client.send_list(sender_id, [
@@ -180,7 +185,7 @@ def generate_file_key(file_url):
 
 def generate_image_file_name(file_url):
 	file_key = misc.hash_string(file_url)
-	return "%s%s" % (file_key, misc.get_file_extension(file_url))
+	return "%s%s" % (file_key, misc.get_url_file_extension(file_url))
 
 
 def process_postback(sender_id, postback):

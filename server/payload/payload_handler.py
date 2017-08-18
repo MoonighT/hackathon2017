@@ -59,53 +59,91 @@ def handle_payload(bot_client, user_id, payload):
 		bot_client.send_generic_message(user_id, elements)
 	elif payload.type == "view_suggestions":
 		occasion = payload.data
-		all_files = get_all_wardrobe(user_id)
-		top_suggest = []
-		bottom_suggest = []
-		for is_top, file in all_files:
-			file_dir = misc.get_file_directory(user_id, DirectoryType.DIR_TOP if is_top else DirectoryType.DIR_BOTTOM, file)
-			probability = classification_manager.get_image_occasion_probability(file_dir, 'male', occasion)
-			if probability > 0.6:
-				entry = dict()
-				entry['type'] = 'wardrobe'
-				entry['path'] = file
-				if is_top:
-					entry['category'] = 'top'
-					top_suggest.append(entry)
-				else:
-					entry['category'] = 'bottom'
-					bottom_suggest.append(entry)
-		shuffle(top_suggest)
-		shuffle(bottom_suggest)
-		if len(top_suggest) > 2:
-			top_suggest = top_suggest[0:2]
-		if len(top_suggest) < 2:
-			#get from recommend
-			recom_top = recommend_manager.get_image_recommend(occasion, 'top')
-			recom_top = recom_top[0:2-len(top_suggest)]
-			for recom in recom_top:
-				entry = dict()
-				entry['type'] = 'external'
-				entry['category'] = 'top'
-				entry['path'] = recom['image']
-				entry['reference'] = recom['purchase']
-				top_suggest.append(entry)
-		if len(bottom_suggest) > 2:
-			bottom_suggest = bottom_suggest[0:2]
-		if len(bottom_suggest) < 2:
-			recom_bottom = recommend_manager.get_image_recommend(occasion, 'bottom')
-			recom_bottom = recom_bottom[0:2-len(bottom_suggest)]
-			for recom in recom_bottom:
-				entry = dict()
-				entry['type'] = 'external'
-				entry['category'] = 'bottom'
-				entry['path'] = recom['image']
-				entry['reference'] = recom['purchase']
-				bottom_suggest.append(entry)
-		print top_suggest+bottom_suggest 
+		show_suggestions_for_occasion(bot_client, user_id, occasion)
 	elif payload.type == "remove_file":
 		file_name = payload.data
 		remove_clothes(bot_client, user_id, file_name)
+
+
+def show_suggestions_for_occasion(bot_client, user_id, occasion):
+	def _show_wardrobe_suggestion(suggestion):
+		return {
+			"title": "Top from your wardrobe",
+			"subtitle": "You can select this as your top from your wardrobe",
+			"image_url": files.get_file_url(suggestion["path"]),
+		}
+
+	def _show_external_suggestion(suggestion):
+		return {
+			"title": "Suggested new item to purchase",
+			"subtitle": "It seems like you are running out of suitable options for this occasion. Perhaps it is time to consider getting a few new pieces to your wardrobe?",
+			"image_url": suggestion["path"],
+			"default_action": {
+				"type": "web_url",
+				"url": suggestion["reference"],
+				"messenger_extensions": False,
+				"webview_height_ratio": "tall",
+			},
+		}
+
+	elements = []
+	suggestions = get_suggestions_for_occasion(user_id, occasion)
+	print json.dumps(suggestions)
+	for suggestion in suggestions:
+		elements.append(_show_wardrobe_suggestion(suggestion) if suggestion["type"] == "wardrobe" else _show_external_suggestion(suggestion))
+
+	bot_client.send_generic_message(user_id, elements)
+	bot_client.send_quick_replies(user_id, "What do you think of the suggestions?", [
+		{
+			"content_type": "text",
+			"title": "Ya I like them",
+			"payload": generate_payload("satisfaction", "", True)
+		},
+		{
+			"content_type": "text",
+			"title": "Hmm can be better?",
+			"payload": generate_payload("satisfaction", "", False)
+		}
+	])
+
+
+def normalize_suggestion_list(suggestions, occasion, image_cat):
+	shuffle(suggestions)
+
+	if len(suggestions) >= 2:
+		return suggestions[0:2]
+
+	# get from recommend
+	recom_top = recommend_manager.get_image_recommend(occasion, "top" if image_cat == ImageCategory.CAT_TOP else "bottom")
+	recom_top = recom_top[0:2 - len(suggestions)]
+	for recom in recom_top:
+		suggestions.append({
+			"type": "external",
+			"path": recom["image"],
+			"reference": recom["purchase"],
+			"category": image_cat,
+		})
+	return suggestions
+
+
+def get_suggestions_for_occasion(user_id, occasion):
+	all_files = get_all_wardrobe(user_id)
+	top_suggest = []
+	bottom_suggest = []
+	for is_top, file in all_files:
+		file_dir = misc.get_file_directory(user_id, DirectoryType.DIR_TOP if is_top else DirectoryType.DIR_BOTTOM, file)
+		probability = classification_manager.get_image_occasion_probability(file_dir, 'male', occasion)
+		if probability > 0.6:
+			suggestion_list = top_suggest if is_top else bottom_suggest
+			suggestion_list.append({
+				"type": "wardrobe",
+				"path": file,
+				"category": ImageCategory.CAT_TOP if is_top else ImageCategory.CAT_BOTTOM
+			})
+
+	top_suggest = normalize_suggestion_list(top_suggest, occasion, ImageCategory.CAT_TOP)
+	bottom_suggest = normalize_suggestion_list(bottom_suggest, occasion, ImageCategory.CAT_BOTTOM)
+	return top_suggest + bottom_suggest
 
 
 def remove_clothes(bot_client, user_id, file_name):
@@ -149,7 +187,6 @@ def list_wardrobe(bot_client, user_id, offset):
 	if not all_files:
 		bot_client.send_text_message(user_id, "Hmm you don't have anything in your wardrobe. Try add some now?")
 		return
-
 
 	will_end = len(all_files) <= offset + 10
 

@@ -19,3 +19,15 @@ class BetterBot(Bot):
 			}
 		}
 		self.send_raw(payload)
+
+	def send_quick_replies(self, user_id, text, replies):
+		payload = {
+			"recipient": {
+				"id": user_id
+			},
+			"message": {
+				"text": text,
+				"quick_replies": replies
+			}
+		}
+		print self.send_raw(payload)
