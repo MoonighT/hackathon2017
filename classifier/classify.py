@@ -6,8 +6,12 @@ from keras.layers import Activation, Dropout, Flatten, Dense
 from keras.layers.convolutional import Convolution2D, MaxPooling2D, ZeroPadding2D
 from keras.optimizers import SGD, Adam
 
-IMAGE_SIZE = 64
-CLASS_COUNT = 2
+CATEGORY_IMAGE_SIZE = 64
+CATEGORY_CLASS_COUNT = 2
+
+OCASSION_IMAGE_SIZE = 16
+OCASSION_CLASS_COUNT = 6
+
 batch_size = 10
 def norm_input(x):
         return x
@@ -23,7 +27,7 @@ def FCBlock(model):
 
 
 def make_category_model():
-    model = Sequential([Lambda(norm_input, input_shape=(IMAGE_SIZE,IMAGE_SIZE,3))])
+    model = Sequential([Lambda(norm_input, input_shape=(CATEGORY_IMAGE_SIZE,CATEGORY_IMAGE_SIZE,3))])
     ConvBlock(model,2,16)
     ConvBlock(model,2,32)
     # ConvBlock(model,2,64)
@@ -35,14 +39,14 @@ def make_category_model():
     model.add(Dropout(0.3))
     #model.add(Dense(4))
     #model.add(Activation('softmax'))
-    model.add(Dense(CLASS_COUNT, activation='softmax'))
+    model.add(Dense(CATEGORY_CLASS_COUNT, activation='softmax'))
     
     model.compile(optimizer=Adam(), loss='categorical_crossentropy',
                   metrics=['accuracy'])
     return model
 
 def make_occursion_model():
-    model = Sequential([Lambda(norm_input, input_shape=(IMAGE_SIZE,IMAGE_SIZE,3))])
+    model = Sequential([Lambda(norm_input, input_shape=(OCASSION_IMAGE_SIZE,OCASSION_IMAGE_SIZE,3))])
     ConvBlock(model,2,16)
     ConvBlock(model,2,32)
     # ConvBlock(model,2,64)
@@ -54,14 +58,14 @@ def make_occursion_model():
     model.add(Dropout(0.3))
     #model.add(Dense(4))
     #model.add(Activation('softmax'))
-    model.add(Dense(CLASS_COUNT, activation='softmax'))
+    model.add(Dense(OCASSION_CLASS_COUNT, activation='softmax'))
     
     model.compile(optimizer=Adam(), loss='categorical_crossentropy',
                   metrics=['accuracy'])
     return model
 
 
-def train(model_type):
+def train(model_type, image_size):
         model = make_category_model()
         if model_type != "category":
             model = make_occursion_model()
@@ -82,14 +86,14 @@ def train(model_type):
         # batches of augmented image data
         train_generator = train_datagen.flow_from_directory(
                 'data/train',  # this is the target directory
-                target_size=(IMAGE_SIZE, IMAGE_SIZE),  # all images will be resized to 150x150
+                target_size=(image_size, image_size),  # all images will be resized to 150x150
                 batch_size=batch_size,
                 class_mode='categorical')
         
         # this is a similar generator, for validation data
         validation_generator = test_datagen.flow_from_directory(
                 'data/validation',
-                target_size=(IMAGE_SIZE, IMAGE_SIZE),
+                target_size=(image_size, image_size),
                 batch_size=batch_size,
                 class_mode='categorical')
         model.optimizer.lr = 0.001
@@ -102,4 +106,4 @@ def train(model_type):
         model.save_weights('model/'+model_type+'.ml')  # always save your weights after training or during training
 
 if __name__ == "__main__":
-        train("category")
+        train("category", CATEGORY_IMAGE_SIZE)
