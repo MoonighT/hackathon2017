@@ -3,12 +3,14 @@ from const import Occasion
 import predict
 
 
-def get_image_category_probabilities(image_path, gender):
+def get_image_category_probabilities(image_path):
 	'''
 	return image category for image stored in the path
 	:param image_path:
 	:return:
 	'''
+	print image_path
+	gender = 'male'
 	c, prob = predict.predict(image_path, gender)
 	bottom_prob = prob[predict.BOTTOM_CASUAL] + prob[predict.BOTTOM_FORMAL]
 	top_prob = prob[predict.TOP_CASUAL] + prob[predict.TOP_FORMAL]
@@ -17,8 +19,8 @@ def get_image_category_probabilities(image_path, gender):
 		ImageCategory.CAT_BOTTOM: bottom_prob
 	}
 
-
 def get_image_occasion_probability(image_path, gender, occasion):
+	gender = 'male'
 	c, prob = predict.predict(image_path, gender)
 	result = 0.0
 	if occasion == Occasion.FORMAL:

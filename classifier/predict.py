@@ -28,13 +28,14 @@ def predict(image_path, gender):
         predictor = female_predictor
     img = Image.open(image_path).convert('RGB') 
     img = img.resize( (classify.IMAGE_SIZE,classify.IMAGE_SIZE), Image.ANTIALIAS)
-    img.save(image_path)
-    x = load_img(image_path)
+    img.save(image_path+'.jpg')
+    x = load_img(image_path+'.jpg')
     x = img_to_array(img)  # this is a Numpy array with shape (3, 150, 150)
     x = x.reshape((1,) + x.shape)
     c = predictor.predict_classes(x,verbose=0)
     out = predictor.predict_proba(x,verbose=0)
-    return c, out
+    os.remove(image_path+'.jpg')
+    return c, out[0]
 
 
 #imageNames = ['data/test/bc.jpeg','data/test/bf.jpeg', 'data/test/tf.jpeg', 'data/test/tf.jpg']
