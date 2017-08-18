@@ -6,6 +6,7 @@ from keras.layers import Activation, Dropout, Flatten, Dense
 from keras.layers.convolutional import Convolution2D, MaxPooling2D, ZeroPadding2D
 from keras.optimizers import SGD, Adam
 
+IMAGE_SIZE = 16
 
 def norm_input(x):
         return x
@@ -19,19 +20,18 @@ def ConvBlock(model, layers, filters):
 def FCBlock(model):
         model.add(Dense(50, activation='relu'))
 
-model = Sequential([Lambda(norm_input, input_shape=(128,128,3))])
+model = Sequential([Lambda(norm_input, input_shape=(IMAGE_SIZE,IMAGE_SIZE,3))])
+ConvBlock(model,2,16)
 ConvBlock(model,2,32)
-ConvBlock(model,2,32)
-ConvBlock(model,2,64)
-ConvBlock(model,2,64)
+#ConvBlock(model,2,64)
+#ConvBlock(model,2,64)
+#ConvBlock(model,2,128)
 
 model.add(Flatten())  # this converts our 3D feature maps to 1D feature vectors
 #model.add(Dense(64))
 #model.add(Activation('relu'))
-model.add(Dropout(0.5))
-#model.add(Dense(4))
-#model.add(Activation('softmax'))
-model.add(Dense(2, activation='softmax'))
+model.add(Dropout(0.8))
+model.add(Dense(4, activation='softmax'))
 
 model.compile(optimizer=Adam(), loss='categorical_crossentropy',
               metrics=['accuracy'])
@@ -55,14 +55,14 @@ test_datagen = ImageDataGenerator(rescale=1./255)
 # batches of augmented image data
 train_generator = train_datagen.flow_from_directory(
         'data/train',  # this is the target directory
-        target_size=(128, 128),  # all images will be resized to 150x150
+        target_size=(IMAGE_SIZE, IMAGE_SIZE),  # all images will be resized to 150x150
         batch_size=batch_size,
         class_mode='categorical')  
 
 # this is a similar generator, for validation data
 validation_generator = test_datagen.flow_from_directory(
         'data/validation',
-        target_size=(128, 128),
+        target_size=(IMAGE_SIZE, IMAGE_SIZE),
         batch_size=batch_size,
         class_mode='categorical')
 
@@ -70,10 +70,10 @@ def train():
         model.optimizer.lr = 0.001
         model.fit_generator(
                 train_generator,
-                steps_per_epoch=500 // batch_size,
-                epochs=10,
+                steps_per_epoch=2000 // batch_size,
+                epochs=50,
                 validation_data=validation_generator,
-                validation_steps=500 // batch_size)
+                validation_steps=2000 // batch_size)
         model.save_weights('model.h0')  # always save your weights after training or during training
 
 if __name__ == "__main__":
