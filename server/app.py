@@ -93,6 +93,7 @@ def process_message(message):
 		{
 			"title": "View Wardrobe",
 			"subtitle": "View the collection of your clothes",
+			"image_url": "https://img1.cgtrader.com/items/642585/6bf3fc072c/large/wardrobe-with-clothes-part-a-3d-model-obj-fbx-ma-mb.jpg",
 			"buttons": [
 				{
 					"type": "postback",
@@ -104,10 +105,12 @@ def process_message(message):
 		{
 			"title": "Add clothes",
 			"subtitle": "Add new clothes to your collection by sending me a photo",
+			"image_url": "https://thumbs.dreamstime.com/t/blonde-woman-standing-near-wardrobe-rack-full-clothes-mir-mirror-making-selfie-cellphone-new-dress-shopping-56846782.jpg",
 		},
 		{
 			"title": "See suggestions",
 			"subtitle": "Get styling suggestions for special occasions",
+			"image_url": "http://fashiondegreelink.com/sites/fashiondegreelink.com/files/styles/large/public/field/image/How%20to%20Become%20A%20Personal%20Stylist.jpg?itok=1c7qu8H2",
 			"buttons": [
 				{
 					"type": "postback",
