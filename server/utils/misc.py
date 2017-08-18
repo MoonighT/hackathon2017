@@ -14,8 +14,12 @@ def hash_string(original_string):
 	return base64.b32encode(hashlib.sha256(original_string).digest())
 
 
-def get_file_extension(url):
+def get_url_file_extension(url):
 	return os.path.splitext(urlparse.urlparse(url).path)[1]
+
+
+def get_file_extension(file_dir):
+	return os.path.splitext(file_dir)[1]
 
 
 def download_file_from_url(url, local_path):
@@ -49,4 +53,4 @@ def get_files_in_directory(user_id, sub_dir_name):
 	sub_dir = os.path.join(const.DIR_WARDROBE, user_id, sub_dir_name)
 	if not os.path.exists(sub_dir):
 		return []
-	return [f for f in os.listdir(sub_dir) if os.path.isfile(os.path.join(sub_dir, f))]
+	return [f for f in os.listdir(sub_dir) if os.path.isfile(os.path.join(sub_dir, f)) and get_file_extension(f) in [".png", ".jpg", ".jpeg"]]
