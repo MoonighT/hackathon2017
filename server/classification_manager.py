@@ -24,7 +24,7 @@ def get_image_occasion_probability(image_path, gender, scenario):
 	c, prob = predict.predict(image_path, gender)
 	result = 0.0
 	occasion = Occasion.CASUAL
-	if scenario in [Scenario.INTERVIEW, Scenario.WEDDING, Scenario.PRESENTATION]:
+	if scenario in [Scenario.INTERVIEW, Scenario.WEDDING, Scenario.DATE_NIGHT]:
 		occasion = Occasion.FORMAL
 	if occasion == Occasion.FORMAL:
 		result = prob[predict.BOTTOM_FORMAL] + prob[predict.TOP_FORMAL]
