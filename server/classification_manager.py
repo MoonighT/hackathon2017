@@ -19,13 +19,14 @@ def get_image_category_probabilities(image_path):
 		ImageCategory.CAT_BOTTOM: bottom_prob
 	}
 
+
 def get_image_occasion_probability(image_path, gender, occasion):
 	gender = 'male'
 	c, prob = predict.predict(image_path, gender)
 	result = 0.0
 	if occasion == Occasion.FORMAL:
-		result = prob[predict.BOTTOM_FORMAL] + prob[predict.TOP_FORMAL]	
-        elif occasion == Occasion.CASUAL:
+		result = prob[predict.BOTTOM_FORMAL] + prob[predict.TOP_FORMAL]
+	elif occasion == Occasion.CASUAL:
 		result = prob[predict.BOTTOM_CASUAL] + prob[predict.TOP_CASUAL]
 	else:
 		result = 0.5

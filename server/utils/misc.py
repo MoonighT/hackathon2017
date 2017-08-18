@@ -1,5 +1,6 @@
 import base64
 import hashlib
+import json
 import os
 import shutil
 import urlparse
@@ -34,3 +35,18 @@ def get_file_directory(user_id, sub_dir_name, file_name):
 	if not os.path.exists(sub_dir):
 		os.makedirs(sub_dir)
 	return os.path.join(sub_dir, file_name)
+
+
+def generate_payload(type, id, data):
+	return json.dumps({
+		"type": type,
+		"id": id,
+		"data": data
+	})
+
+
+def get_files_in_directory(user_id, sub_dir_name):
+	sub_dir = os.path.join(const.DIR_WARDROBE, user_id, sub_dir_name)
+	if not os.path.exists(sub_dir):
+		return []
+	return [f for f in os.listdir(sub_dir) if os.path.isfile(os.path.join(sub_dir, f))]
