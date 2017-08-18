@@ -25,3 +25,7 @@ class DirectoryType(object):
 class Gender(object):
 	MALE = 1
 	FEMALE = 2
+
+class Occasion(object):
+	FORMAL = 1
+	CASUAL = 2

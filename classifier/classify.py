@@ -28,8 +28,6 @@ ConvBlock(model,2,32)
 #ConvBlock(model,2,128)
 
 model.add(Flatten())  # this converts our 3D feature maps to 1D feature vectors
-#model.add(Dense(64))
-#model.add(Activation('relu'))
 model.add(Dropout(0.8))
 model.add(Dense(4, activation='softmax'))
 
@@ -38,35 +36,34 @@ model.compile(optimizer=Adam(), loss='categorical_crossentropy',
 
 batch_size = 10
 
-# this is the augmentation configuration we will use for training
-train_datagen = ImageDataGenerator(
-        rescale=1./255,
-        shear_range=0.2,
-        zoom_range=0.2,
-        horizontal_flip=True)
-
-
-# this is the augmentation configuration we will use for testing:
-# only rescaling
-test_datagen = ImageDataGenerator(rescale=1./255)
-
-# this is a generator that will read pictures found in
-# subfolers of 'data/train', and indefinitely generate
-# batches of augmented image data
-train_generator = train_datagen.flow_from_directory(
-        'data/train',  # this is the target directory
-        target_size=(IMAGE_SIZE, IMAGE_SIZE),  # all images will be resized to 150x150
-        batch_size=batch_size,
-        class_mode='categorical')  
-
-# this is a similar generator, for validation data
-validation_generator = test_datagen.flow_from_directory(
-        'data/validation',
-        target_size=(IMAGE_SIZE, IMAGE_SIZE),
-        batch_size=batch_size,
-        class_mode='categorical')
-
 def train():
+        # this is the augmentation configuration we will use for training
+        train_datagen = ImageDataGenerator(
+                rescale=1./255,
+                shear_range=0.2,
+                zoom_range=0.2,
+                horizontal_flip=True)
+
+
+        # this is the augmentation configuration we will use for testing:
+        # only rescaling
+        test_datagen = ImageDataGenerator(rescale=1./255)
+
+        # this is a generator that will read pictures found in
+        # subfolers of 'data/train', and indefinitely generate
+        # batches of augmented image data
+        train_generator = train_datagen.flow_from_directory(
+                'data/train',  # this is the target directory
+                target_size=(IMAGE_SIZE, IMAGE_SIZE),  # all images will be resized to 150x150
+                batch_size=batch_size,
+                class_mode='categorical')  
+
+        # this is a similar generator, for validation data
+        validation_generator = test_datagen.flow_from_directory(
+                'data/validation',
+                target_size=(IMAGE_SIZE, IMAGE_SIZE),
+                batch_size=batch_size,
+                class_mode='categorical')
         model.optimizer.lr = 0.001
         model.fit_generator(
                 train_generator,
