@@ -28,6 +28,11 @@ app = Flask(__name__)
 CATEGORY_PROBABILITY_THRESHOLD = 0.6
 
 
+@app.route("/")
+def hello():
+	return "Everything is running okay"
+
+
 @app.route("/webhook", methods=['GET', 'POST'])
 def process_fb_webhook():
 	print "==========================="
