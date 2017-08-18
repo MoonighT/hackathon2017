@@ -23,15 +23,15 @@ def get_image_category_probabilities(image_path):
 
 def get_image_occasion_probability(image_path, gender, scenario):
 	gender = 'male'
-	c, prob = predict.predict(image_path, gender)
+	c, prob = predict.predict_occursion(image_path, gender)
 	result = 0.0
 	occasion = Occasion.CASUAL
 	if scenario in [Scenario.INTERVIEW, Scenario.WEDDING, Scenario.DATE_NIGHT, Scenario.PRESENTATION]:
 		occasion = Occasion.FORMAL
 	if occasion == Occasion.FORMAL:
-		result = prob[predict.BOTTOM_FORMAL] + prob[predict.TOP_FORMAL]
+		result = prob[predict.IS_FORMAL]
 	elif occasion == Occasion.CASUAL:
-		result = prob[predict.BOTTOM_CASUAL] + prob[predict.TOP_CASUAL]
+		result = prob[predict.IS_BEACH]
 	else:
 		result = 0.5
 	return result

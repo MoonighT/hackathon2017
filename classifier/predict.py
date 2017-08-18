@@ -8,6 +8,9 @@ from PIL import Image
 IS_BOTTOM = 0
 IS_TOP = 1
 
+IS_BEACH = 0
+IS_FORMAL = 1
+
 BOTTOM_CASUAL = 0
 BOTTOM_FORMAL = 1
 TOP_CASUAL = 2
