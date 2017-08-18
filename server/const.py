@@ -78,3 +78,4 @@ SCENARIO_DETAILS = {
 			"image_url": "https://cdn.yourstory.com/wp-content/uploads/2015/01/Hackathon-2014.jpg",
 		}
 	}
+}
