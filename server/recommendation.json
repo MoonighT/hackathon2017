@@ -1,0 +1,56 @@
+{
+  "recommendation": {
+    "male": {
+      "formal": {
+        "top": [
+          {
+            "image": "https://cfshopeesg-a.akamaihd.net/file/a067d283ab3b8e74059c4907b2ed85f8",
+            "purchase": "https://shopee.sg/Fashion-Mens-Luxury-Short-Sleeve-Shirt-Casual-Slim-Fit-Formal-Shirts-Tops-i.7733457.212209679"
+          },
+          {
+            "image": "https://cfshopeesg-a.akamaihd.net/file/a067d283ab3b8e74059c4907b2ed85f8",
+            "purchase": "https://shopee.sg/Fashion-Mens-Luxury-Short-Sleeve-Shirt-Casual-Slim-Fit-Formal-Shirts-Tops-i.7733457.212209687"
+          }
+        ],
+        "bottom": [
+          {
+            "image": "https://cfshopeesg-a.akamaihd.net/file/fcf49a2ac7b52ce4305d7e240ad156e4",
+            "purchase": "https://shopee.sg/-PRE-ORDER-Men-Office-Working-Formal-Suits-Pants-i.25063336.302550461"
+          }
+        ]
+      },
+      "casual": {
+        "top": [
+          {
+            "image": "https://cfshopeesg-a.akamaihd.net/file/6176cecc965c575dcdfe2b0932bab60e",
+            "purchase": "https://shopee.sg/Fredd-marshall-men's-t-shirt-men's-short-sleeved-tee-i.14446428.215214838"
+          },
+          {
+            "image": "https://cfshopeesg-a.akamaihd.net/file/e14f8ec75407825b4f4351d26ee4fc5e",
+            "purchase": "https://shopee.sg/New-Style-Men-Turtleneck-Slim-Casual-Long-Sleeve-Shirt-T-shirts-Tee-Shirt-Tops-i.9719059.307773884"
+          }
+        ],
+        "bottom": [
+          {
+            "image": "https://cfshopeesg-a.akamaihd.net/file/b3301b2774eb96bc33b232885b6499af",
+            "purchase": "https://shopee.sg/Mens-Cotton-Casual-Harem-Pants-E530-i.15004011.223215209"
+          },
+          {
+            "image": "https://cfshopeesg-a.akamaihd.net/file/79f870ada04a6606810f16d10ea92e1c",
+            "purchase": "https://shopee.sg/Men-'s-Slim-straight-casual-chinos-dark-blue-pants-men-K20-i.12990524.114841788"
+          }
+        ]
+      }
+    },
+    "female": {
+      "formal": {
+        "top": [],
+        "bottom": []
+      },
+      "casual": {
+        "top": [],
+        "bottom": []
+      }
+    }
+  }
+}
