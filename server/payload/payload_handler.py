@@ -45,7 +45,7 @@ def handle_payload(bot_client, user_id, payload):
 				"buttons": [
 					{
 						"type": "postback",
-						"title": "View",
+						"title": "View %s" % value["title"],
 						"payload": generate_payload("view_suggestions", "", key)
 					}
 				]
@@ -61,6 +61,23 @@ def handle_payload(bot_client, user_id, payload):
 		for is_top, file in all_files:
 			file_dir = misc.get_file_directory(user_id, DirectoryType.DIR_TOP if is_top else DirectoryType.DIR_BOTTOM, file)
 			probability = classification_manager.get_image_occasion_probability("male", file_dir, Occasion.FORMAL)
+	elif payload.type == "remove_file":
+		file_name = payload.data
+		remove_clothes(bot_client, user_id, file_name)
+
+
+def remove_clothes(bot_client, user_id, file_name):
+	top_file_dir = misc.get_file_directory(user_id, DirectoryType.DIR_TOP, file_name)
+	bottom_file_dir = misc.get_file_directory(user_id, DirectoryType.DIR_BOTTOM, file_name)
+	print top_file_dir
+	print bottom_file_dir
+	if os.path.exists(top_file_dir):
+		print "top file exist"
+		os.remove(top_file_dir)
+	elif os.path.exists(bottom_file_dir):
+		print "bottom file exist"
+		os.remove(bottom_file_dir)
+	bot_client.send_text_message(user_id, "OK, I will take care of that!")
 
 
 def get_all_wardrobe(user_id):
@@ -85,10 +102,12 @@ def list_wardrobe(bot_client, user_id, offset):
 			]
 		}
 
-	top_files = misc.get_files_in_directory(user_id, DirectoryType.DIR_TOP)
-	bottom_files = misc.get_files_in_directory(user_id, DirectoryType.DIR_BOTTOM)
-	all_files = [(True, file) for file in top_files]
-	all_files += [(False, file) for file in bottom_files]
+	all_files = get_all_wardrobe(user_id)
+
+	if not all_files:
+		bot_client.send_text_message(user_id, "Hmm you don't have anything in your wardrobe. Try add some now?")
+		return
+
 
 	will_end = len(all_files) <= offset + 10
 
@@ -97,9 +116,15 @@ def list_wardrobe(bot_client, user_id, offset):
 	if not will_end:
 		# append more option
 		elements.append({
-
+			"title": "You have a great collection :D",
+			# todo: replace with better view more
+			"image_url": "http://www.allschools.org/catalog/view/theme/metronicnew/eadmission/newtheme/view1.png",
+			"buttons": [
+				{
+					"type": "postback",
+					"title": "View More",
+					"payload": generate_payload("view_wardrobe", "", offset + 9)
+				}
+			]
 		})
-	print elements
-	print json.dumps(elements)
-
 	bot_client.send_generic_message(user_id, elements)
