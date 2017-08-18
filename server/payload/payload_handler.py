@@ -2,9 +2,10 @@ import json
 import os
 
 import copy
-
-import classification_manager
+from random import shuffle
 from const import ImageCategory, DirectoryType, SCENARIO_DETAILS, Occasion
+import classification_manager
+import recommend_manager
 from payload import Payload
 from utils import misc, files
 from utils.misc import generate_payload
@@ -59,10 +60,50 @@ def handle_payload(bot_client, user_id, payload):
 	elif payload.type == "view_suggestions":
 		occasion = payload.data
 		all_files = get_all_wardrobe(user_id)
-
+		top_suggest = []
+		bottom_suggest = []
 		for is_top, file in all_files:
 			file_dir = misc.get_file_directory(user_id, DirectoryType.DIR_TOP if is_top else DirectoryType.DIR_BOTTOM, file)
-			probability = classification_manager.get_image_occasion_probability("male", file_dir, Occasion.FORMAL)
+			probability = classification_manager.get_image_occasion_probability("male", file_dir, occasion)
+			if probability > 0.6:
+				entry = dict()
+				entry['type'] = 'wardrobe'
+				entry['path'] = file
+				if is_top:
+					entry['category'] = 'top'
+					top_suggest.append(entry)
+				else:
+					entry['category'] = 'bottom'
+					bottom_suggest.append(entry)
+		shuffle(top_suggest)
+		shuffle(bottom_suggest)
+		if len(top_suggest) > 2:
+			top_suggest = top_suggest[0:2]
+		if len(top_suggest) < 2:
+			#get from recommend
+			recom_top = get_image_recommend(occasion, 'top')
+			recom_top = recom_top[0:2]
+			for recom in recom_top:
+				entry = dict()
+				entry['type'] = 'external'
+				entry['category'] = 'top'
+				entry['path'] = recom['image']
+				entry['reference'] = recom['purchase']
+			top_suggest.append(entry)
+
+		if len(bottom_suggest) > 2:
+			bottom_suggest = bottom_suggest[0:2]
+		if len(bottom_suggest) < 2:
+			recom_top = get_image_recommend(occasion, 'top')
+			recom_top = recom_top[0:2]
+			for recom in recom_top:
+				entry = dict()
+				entry['type'] = 'external'
+				entry['category'] = 'bottom'
+				entry['path'] = recom['image']
+				entry['reference'] = recom['purchase']
+			bottom_suggest.append(entry)
+		print top_suggest, bottom_suggest 
 
 
 def get_all_wardrobe(user_id):

@@ -38,11 +38,11 @@ def predict(image_path, gender):
     return c, out[0]
 
 
-#imageNames = ['data/test/bc.jpeg','data/test/bf.jpeg', 'data/test/tf.jpeg', 'data/test/tf.jpg']
-#def test():
-#    for imageName in imageNames:
-#        c, out = predict(imageName, 'male')
-#        print c, out
+def test():
+    imageNames = ['data/test/test.jpeg']
+    for imageName in imageNames:
+        c, out = predict(imageName, 'male')
+        print c, out
 
-#if __name__ == "__main__":
-#    test()
+if __name__ == "__main__":
+    test()

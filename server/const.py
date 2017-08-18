@@ -15,7 +15,6 @@ CAT_TO_NAME = {
 	ImageCategory.CAT_BOTTOM: "Legwear"
 }
 
-
 class DirectoryType(object):
 	DIR_TEMP = "temp"
 	DIR_TOP = "top"
