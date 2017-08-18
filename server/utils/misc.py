@@ -5,7 +5,6 @@ import shutil
 import urlparse
 
 import requests
-from flask import app
 
 import const
 
