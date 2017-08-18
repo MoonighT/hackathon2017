@@ -74,7 +74,7 @@ def train():
                 epochs=50,
                 validation_data=validation_generator,
                 validation_steps=2000 // batch_size)
-        model.save_weights('model.h0')  # always save your weights after training or during training
+        model.save_weights('model/male.0')  # always save your weights after training or during training
 
 if __name__ == "__main__":
         train()
