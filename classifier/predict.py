@@ -13,21 +13,29 @@ BOTTOM_FORMAL = 1
 TOP_CASUAL = 2
 TOP_FORMAL = 3
 
+Dating = 0
+Hackathon = 1
+Interview = 2
+Party = 3
+Sports = 4
+Wedding = 5
+
+
 male_model = "model/category.ml"
 male_predictor = classify.make_category_model()
 male_predictor.add(Dropout(0.0))
 male_predictor.load_weights(male_model)
 
-occursion_model = "model/occursion.ml"
-occursion_predictor = classify.model 
-occursion_model.add(Dropout(0.0))
+occursion_model = "model/formal.ml"
+occursion_predictor = classify.make_occursion_model()
+occursion_predictor.add(Dropout(0.0))
 occursion_predictor.load_weights(occursion_model)
 
 # return class and a array of prob
 def predict(image_path, gender):
     predictor = male_predictor
     img = Image.open(image_path).convert('RGB') 
-    img = img.resize( (classify.IMAGE_SIZE,classify.IMAGE_SIZE), Image.ANTIALIAS)
+    img = img.resize( (classify.CATEGORY_IMAGE_SIZE,classify.CATEGORY_IMAGE_SIZE), Image.ANTIALIAS)
     img.save(image_path+'.jpg')
     x = load_img(image_path+'.jpg')
     x = img_to_array(img)  # this is a Numpy array with shape (3, 150, 150)
@@ -40,7 +48,7 @@ def predict(image_path, gender):
 def predict_occursion(image_path, gender):
     predictor = occursion_predictor
     img = Image.open(image_path).convert('RGB') 
-    img = img.resize( (classify.IMAGE_SIZE,classify.IMAGE_SIZE), Image.ANTIALIAS)
+    img = img.resize( (classify.OCASSION_IMAGE_SIZE,classify.OCASSION_IMAGE_SIZE), Image.ANTIALIAS)
     img.save(image_path+'.jpg')
     x = load_img(image_path+'.jpg')
     x = img_to_array(img)  # this is a Numpy array with shape (3, 150, 150)
@@ -52,9 +60,10 @@ def predict_occursion(image_path, gender):
 
 
 def test():
-    imageNames = ['data/test/test.jpeg']
-    for imageName in imageNames:
-        c, out = predict(imageName, 'male')
+    #imageNames = ['data/test/1.jpg', 'data/test/2.jpg', 'data/test/3.jpg', 'data/test/6.jpg', 'data/test/5.jpg']
+    for i in range(38):
+        imageName = 'data/test/'+str(i+1)+'.jpg'
+        c, out = predict_occursion(imageName, 'male')
         print c, out
 
 if __name__ == "__main__":

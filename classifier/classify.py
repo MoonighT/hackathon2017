@@ -9,8 +9,8 @@ from keras.optimizers import SGD, Adam
 CATEGORY_IMAGE_SIZE = 64
 CATEGORY_CLASS_COUNT = 2
 
-OCASSION_IMAGE_SIZE = 16
-OCASSION_CLASS_COUNT = 6
+OCASSION_IMAGE_SIZE = 64
+OCASSION_CLASS_COUNT = 2
 
 batch_size = 10
 def norm_input(x):
@@ -47,15 +47,15 @@ def make_category_model():
 
 def make_occursion_model():
     model = Sequential([Lambda(norm_input, input_shape=(OCASSION_IMAGE_SIZE,OCASSION_IMAGE_SIZE,3))])
-    ConvBlock(model,2,16)
     ConvBlock(model,2,32)
+    ConvBlock(model,2,64)
     # ConvBlock(model,2,64)
     # ConvBlock(model,2,64)
 
     model.add(Flatten())  # this converts our 3D feature maps to 1D feature vectors
-    #model.add(Dense(64))
-    #model.add(Activation('relu'))
-    model.add(Dropout(0.3))
+    model.add(Dense(64))
+    model.add(Activation('relu'))
+    model.add(Dropout(0.2))
     #model.add(Dense(4))
     #model.add(Activation('softmax'))
     model.add(Dense(OCASSION_CLASS_COUNT, activation='softmax'))
@@ -106,4 +106,4 @@ def train(model_type, image_size):
         model.save_weights('model/'+model_type+'.ml')  # always save your weights after training or during training
 
 if __name__ == "__main__":
-        train("category", CATEGORY_IMAGE_SIZE)
+        train("formal", OCASSION_IMAGE_SIZE)
