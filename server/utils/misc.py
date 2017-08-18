@@ -53,4 +53,4 @@ def get_files_in_directory(user_id, sub_dir_name):
 	sub_dir = os.path.join(const.DIR_WARDROBE, user_id, sub_dir_name)
 	if not os.path.exists(sub_dir):
 		return []
-	return [f for f in os.listdir(sub_dir) if os.path.isfile(os.path.join(sub_dir, f)) and get_file_extension(f) in [".png", ".jpg", ".jpeg"]]
+	return [get_file_directory(user_id, sub_dir_name, f) for f in os.listdir(sub_dir) if os.path.isfile(os.path.join(sub_dir, f)) and get_file_extension(f) in [".png", ".jpg", ".jpeg"]]
