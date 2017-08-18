@@ -6,8 +6,9 @@ from keras.layers import Activation, Dropout, Flatten, Dense
 from keras.layers.convolutional import Convolution2D, MaxPooling2D, ZeroPadding2D
 from keras.optimizers import SGD, Adam
 
-IMAGE_SIZE = 96
-CLASS_COUNT = 4
+IMAGE_SIZE = 64
+CLASS_COUNT = 2
+batch_size = 10
 def norm_input(x):
         return x
 
@@ -20,28 +21,50 @@ def ConvBlock(model, layers, filters):
 def FCBlock(model):
         model.add(Dense(50, activation='relu'))
 
-model = Sequential([Lambda(norm_input, input_shape=(IMAGE_SIZE,IMAGE_SIZE,3))])
-ConvBlock(model,2,16)
-ConvBlock(model,2,32)
-# ConvBlock(model,2,64)
-# ConvBlock(model,2,64)
 
-model.add(Flatten())  # this converts our 3D feature maps to 1D feature vectors
-#model.add(Dense(64))
-#model.add(Activation('relu'))
-model.add(Dropout(0.3))
-#model.add(Dense(4))
-#model.add(Activation('softmax'))
-model.add(Dense(CLASS_COUNT, activation='softmax'))
+def make_category_model():
+    model = Sequential([Lambda(norm_input, input_shape=(IMAGE_SIZE,IMAGE_SIZE,3))])
+    ConvBlock(model,2,16)
+    ConvBlock(model,2,32)
+    # ConvBlock(model,2,64)
+    # ConvBlock(model,2,64)
 
-model.compile(optimizer=Adam(), loss='categorical_crossentropy',
-              metrics=['accuracy'])
+    model.add(Flatten())  # this converts our 3D feature maps to 1D feature vectors
+    #model.add(Dense(64))
+    #model.add(Activation('relu'))
+    model.add(Dropout(0.3))
+    #model.add(Dense(4))
+    #model.add(Activation('softmax'))
+    model.add(Dense(CLASS_COUNT, activation='softmax'))
+    
+    model.compile(optimizer=Adam(), loss='categorical_crossentropy',
+                  metrics=['accuracy'])
+    return model
 
-batch_size = 10
+def make_occursion_model():
+    model = Sequential([Lambda(norm_input, input_shape=(IMAGE_SIZE,IMAGE_SIZE,3))])
+    ConvBlock(model,2,16)
+    ConvBlock(model,2,32)
+    # ConvBlock(model,2,64)
+    # ConvBlock(model,2,64)
+
+    model.add(Flatten())  # this converts our 3D feature maps to 1D feature vectors
+    #model.add(Dense(64))
+    #model.add(Activation('relu'))
+    model.add(Dropout(0.3))
+    #model.add(Dense(4))
+    #model.add(Activation('softmax'))
+    model.add(Dense(CLASS_COUNT, activation='softmax'))
+    
+    model.compile(optimizer=Adam(), loss='categorical_crossentropy',
+                  metrics=['accuracy'])
+    return model
 
 
-
-def train():
+def train(model_type):
+        model = make_category_model()
+        if model_type != "category":
+            model = make_occursion_model()
         # this is the augmentation configuration we will use for training
         train_datagen = ImageDataGenerator(
                 rescale=1./255,
@@ -73,10 +96,10 @@ def train():
         model.fit_generator(
                 train_generator,
                 steps_per_epoch=2000 // batch_size,
-                epochs=50,
+                epochs=10,
                 validation_data=validation_generator,
                 validation_steps=2000 // batch_size)
-        model.save_weights('model.h0')  # always save your weights after training or during training
+        model.save_weights('model/'+model_type+'.ml')  # always save your weights after training or during training
 
 if __name__ == "__main__":
-        train()
+        train("category")

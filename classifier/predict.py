@@ -5,27 +5,40 @@ import numpy as np
 import classify, os
 from PIL import Image
 
+IS_BOTTOM = 0
+IS_TOP = 1
+
 BOTTOM_CASUAL = 0
 BOTTOM_FORMAL = 1
 TOP_CASUAL = 2
 TOP_FORMAL = 3
 
-male_model = "model/male.ml"
-#female_model = "model/female.ml"
-
-male_predictor = classify.model
+male_model = "model/category.ml"
+male_predictor = classify.make_category_model()
 male_predictor.add(Dropout(0.0))
 male_predictor.load_weights(male_model)
 
-#female_predictor = classify.model 
-#female_model.add(Dropout(0.0))
-#female_predictor.load_weights(female_model)
+occursion_model = "model/occursion.ml"
+occursion_predictor = classify.model 
+occursion_model.add(Dropout(0.0))
+occursion_predictor.load_weights(occursion_model)
 
 # return class and a array of prob
 def predict(image_path, gender):
     predictor = male_predictor
-    if gender == "female":
-        predictor = female_predictor
+    img = Image.open(image_path).convert('RGB') 
+    img = img.resize( (classify.IMAGE_SIZE,classify.IMAGE_SIZE), Image.ANTIALIAS)
+    img.save(image_path+'.jpg')
+    x = load_img(image_path+'.jpg')
+    x = img_to_array(img)  # this is a Numpy array with shape (3, 150, 150)
+    x = x.reshape((1,) + x.shape)
+    c = predictor.predict_classes(x,verbose=0)
+    out = predictor.predict_proba(x,verbose=0)
+    os.remove(image_path+'.jpg')
+    return c, out[0]
+
+def predict_occursion(image_path, gender):
+    predictor = occursion_predictor
     img = Image.open(image_path).convert('RGB') 
     img = img.resize( (classify.IMAGE_SIZE,classify.IMAGE_SIZE), Image.ANTIALIAS)
     img.save(image_path+'.jpg')

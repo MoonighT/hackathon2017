@@ -38,6 +38,7 @@ class Scenario(object):
 	SPORTS = 4
 	DATE_NIGHT = 5
 	HACKATHON = 6
+	PRESENTATION = 7	
 
 
 SCENARIO_DETAILS = {
@@ -56,10 +57,14 @@ SCENARIO_DETAILS = {
 		"subtitle": "Decent clothes for the BIG day? Try some of these outfits",
 		"image_url": "https://wwcdn.weddingwire.com/assets/category-landings/inspiration_tiles/11/rustic-california-garden-wedding-685c40d3962159d56df7f1863a683530f88412e5ea3e3b30b83eeaacccd34067.jpg",
 	},
+	Scenario.PRESENTATION: {
+		"title": "Presentation",
+ 		"subtitle": "Impress the audience with some smart outfits? You should never miss these suggestions!",
+		"image_url": "https://cdn2.hubspot.net/hubfs/580101/How%20to%20create%20a%20winning%20presentation-367141-edited.jpg",
 	Scenario.SPORTS: {
 		"title": "Sports",
 		"subtitle": "Go for some exercise? You should never miss these suggestions!",
-		"image_url": "http://www.ssasjm.herts.sch.uk/wp-content/uploads/2016/05/Sports-Days.jpg",
+		"image_url": "://cdn2.hubspot.net/hubfs/580101/How%20to%20create%20a%20winning%20presentation-367141-edited.jpg",
 	},
 	Scenario.DATE_NIGHT: {
 		"title": "Date Night",
