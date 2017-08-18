@@ -1,7 +1,7 @@
 def get_file_url(file):
 	print file
 
-	parts = file.splits("wardrobe")
+	parts = file.decode("utf-8").splits("wardrobe")
 
 	return "https://stylist.gaofeng.one/wardrobe/" + parts[1]
 	# return "https://image.freepik.com/free-vector/coloured-robot-design_1148-9.jpg"
