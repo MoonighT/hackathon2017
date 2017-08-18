@@ -85,10 +85,11 @@ def process_attachment(sender_id, attachment):
 
 	# save file to local
 	file_name = generate_image_file_name(payload_url)
-	download_file_from_url(payload_url, get_file_directory(sender_id, DirectoryType.DIR_TEMP, file_name))
+	file_path = get_file_directory(sender_id, DirectoryType.DIR_TEMP, file_name)
+	download_file_from_url(payload_url, file_path)
 
 	# get image category probability
-	category_probabilities = classification_manager.get_image_category_probabilities(file_name)
+	category_probabilities = classification_manager.get_image_category_probabilities(file_path)
 	most_probable_category = max(category_probabilities.iteritems(), key=operator.itemgetter(1))[0]
 	highest_probability = category_probabilities[most_probable_category]
 	is_confident = highest_probability >= CATEGORY_PROBABILITY_THRESHOLD
