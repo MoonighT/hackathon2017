@@ -64,14 +64,61 @@ def process_message(message):
 		print "ERROR - not for me"
 		return
 
+	# process payload
 	if postback_body:
 		process_postback(sender_id, postback_body)
 		return
 
+	# process attachment
 	attachments = parser.parse_json(message_body, "attachments")
 	if attachments:
 		for attachment in attachments:
 			process_attachment(sender_id, attachment)
+		return
+
+	# process message
+	if not process_text(sender_id, message_body):
+		send_list(sender_id, [
+			{
+				"title": "View Wardrobe",
+				"subtitle": "View the collection of your clothes",
+			},
+			{
+				"title": "Add clothes",
+				"subtitle": "Add new clothes to your collection",
+			},
+			{
+				"title": "See suggestions",
+				"subtitle": "Get styling suggestions for special occasions",
+			}
+		])
+
+
+def send_list(user_id, elements):
+	payload = {
+		'recipient': {
+			'id': user_id
+		},
+		'message': {
+			"attachment": {
+				"type": "template",
+				"payload": {
+					"template_type": "list",
+					"top_element_style": "compact",
+					"elements": elements
+				}
+			}
+		}
+	}
+	bot_client.send_raw(payload)
+
+
+def process_text(sender_id, message):
+	text = parser.parse_json(message, "text")
+	if text == "hi":
+		bot_client.send_text_message(sender_id, "hi")
+
+
 
 
 def process_attachment(sender_id, attachment):
