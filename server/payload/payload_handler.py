@@ -1,12 +1,10 @@
 import json
 import os
 
-import copy
-
 import classification_manager
-from const import ImageCategory, DirectoryType, SCENARIO_DETAILS, Occasion
+from const import DirectoryType, ImageCategory, Occasion, SCENARIO_DETAILS
 from payload import Payload
-from utils import misc, files
+from utils import files, misc
 from utils.misc import generate_payload
 
 
@@ -44,8 +42,6 @@ def handle_payload(bot_client, user_id, payload):
 		elements = []
 		for key, value in SCENARIO_DETAILS.iteritems():
 			element = {
-				"title": value["title"],
-				"subtitle": value["subtitle"],
 				"buttons": [
 					{
 						"type": "postback",
@@ -54,6 +50,8 @@ def handle_payload(bot_client, user_id, payload):
 					}
 				]
 			}
+			for k, v in value.iteritems():
+				element[k] = v
 			elements.append(element)
 		bot_client.send_generic_message(user_id, elements)
 	elif payload.type == "view_suggestions":
