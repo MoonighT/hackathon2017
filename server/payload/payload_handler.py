@@ -64,7 +64,7 @@ def handle_payload(bot_client, user_id, payload):
 		bottom_suggest = []
 		for is_top, file in all_files:
 			file_dir = misc.get_file_directory(user_id, DirectoryType.DIR_TOP if is_top else DirectoryType.DIR_BOTTOM, file)
-			probability = classification_manager.get_image_occasion_probability("male", file_dir, occasion)
+			probability = classification_manager.get_image_occasion_probability(file_dir, 'male', occasion)
 			if probability > 0.6:
 				entry = dict()
 				entry['type'] = 'wardrobe'
@@ -81,29 +81,28 @@ def handle_payload(bot_client, user_id, payload):
 			top_suggest = top_suggest[0:2]
 		if len(top_suggest) < 2:
 			#get from recommend
-			recom_top = get_image_recommend(occasion, 'top')
-			recom_top = recom_top[0:2]
+			recom_top = recommend_manager.get_image_recommend(occasion, 'top')
+			recom_top = recom_top[0:2-len(top_suggest)]
 			for recom in recom_top:
 				entry = dict()
 				entry['type'] = 'external'
 				entry['category'] = 'top'
 				entry['path'] = recom['image']
 				entry['reference'] = recom['purchase']
-			top_suggest.append(entry)
-
+				top_suggest.append(entry)
 		if len(bottom_suggest) > 2:
 			bottom_suggest = bottom_suggest[0:2]
 		if len(bottom_suggest) < 2:
-			recom_top = get_image_recommend(occasion, 'top')
-			recom_top = recom_top[0:2]
-			for recom in recom_top:
+			recom_bottom = recommend_manager.get_image_recommend(occasion, 'bottom')
+			recom_bottom = recom_bottom[0:2-len(bottom_suggest)]
+			for recom in recom_bottom:
 				entry = dict()
 				entry['type'] = 'external'
 				entry['category'] = 'bottom'
 				entry['path'] = recom['image']
 				entry['reference'] = recom['purchase']
-			bottom_suggest.append(entry)
-		print top_suggest, bottom_suggest 
+				bottom_suggest.append(entry)
+		print top_suggest+bottom_suggest 
 	elif payload.type == "remove_file":
 		file_name = payload.data
 		remove_clothes(bot_client, user_id, file_name)
