@@ -15,6 +15,7 @@ CAT_TO_NAME = {
 	ImageCategory.CAT_BOTTOM: "Legwear"
 }
 
+
 class DirectoryType(object):
 	DIR_TEMP = "temp"
 	DIR_TOP = "top"
@@ -38,7 +39,7 @@ class Scenario(object):
 	SPORTS = 4
 	DATE_NIGHT = 5
 	HACKATHON = 6
-	PRESENTATION = 7	
+	PRESENTATION = 7
 
 
 SCENARIO_DETAILS = {
@@ -59,21 +60,21 @@ SCENARIO_DETAILS = {
 	},
 	Scenario.PRESENTATION: {
 		"title": "Presentation",
- 		"subtitle": "Impress the audience with some smart outfits? You should never miss these suggestions!",
+		"subtitle": "Impress the audience with some smart outfits? You should never miss these suggestions!",
 		"image_url": "https://cdn2.hubspot.net/hubfs/580101/How%20to%20create%20a%20winning%20presentation-367141-edited.jpg",
-	Scenario.SPORTS: {
-		"title": "Sports",
-		"subtitle": "Go for some exercise? You should never miss these suggestions!",
-		"image_url": "://cdn2.hubspot.net/hubfs/580101/How%20to%20create%20a%20winning%20presentation-367141-edited.jpg",
-	},
-	Scenario.DATE_NIGHT: {
-		"title": "Date Night",
-		"subtitle": "Wow! You will look more impressive with these outfits!",
-		"image_url": "http://www.rolereboot.org/wp-content/uploads/2014/08/date-night.jpg",
-	},
-	Scenario.HACKATHON: {
-		"title": "Hackathon",
-		"subtitle": "Jeans and hoodies? You won't go wrong with these options!",
-		"image_url": "https://cdn.yourstory.com/wp-content/uploads/2015/01/Hackathon-2014.jpg",
+		Scenario.SPORTS: {
+			"title": "Sports",
+			"subtitle": "Go for some exercise? You should never miss these suggestions!",
+			"image_url": "://cdn2.hubspot.net/hubfs/580101/How%20to%20create%20a%20winning%20presentation-367141-edited.jpg",
+		},
+		Scenario.DATE_NIGHT: {
+			"title": "Date Night",
+			"subtitle": "Wow! You will look more impressive with these outfits!",
+			"image_url": "http://www.rolereboot.org/wp-content/uploads/2014/08/date-night.jpg",
+		},
+		Scenario.HACKATHON: {
+			"title": "Hackathon",
+			"subtitle": "Jeans and hoodies? You won't go wrong with these options!",
+			"image_url": "https://cdn.yourstory.com/wp-content/uploads/2015/01/Hackathon-2014.jpg",
+		}
 	}
-}
