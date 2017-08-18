@@ -1,4 +1,7 @@
-DIR_WARDROBE = "/Users/kaizhimeng/personal/stylist/wardrobe"
+import os
+
+dir_path = os.path.dirname(os.path.realpath(__file__))
+DIR_WARDROBE = os.path.join(dir_path, "wardrobe")
 
 
 class ImageCategory(object):
@@ -22,4 +25,3 @@ class DirectoryType(object):
 class Gender(object):
 	MALE = 1
 	FEMALE = 2
-
