@@ -47,8 +47,8 @@ def make_category_model():
 
 def make_occursion_model():
     model = Sequential([Lambda(norm_input, input_shape=(OCASSION_IMAGE_SIZE,OCASSION_IMAGE_SIZE,3))])
-    ConvBlock(model,2,4)
-    ConvBlock(model,2,8)
+    ConvBlock(model,2,32)
+    ConvBlock(model,2,32)
     # ConvBlock(model,2,64)
     # ConvBlock(model,2,64)
 
@@ -99,10 +99,10 @@ def train(model_type, image_size):
         model.optimizer.lr = 0.001
         model.fit_generator(
                 train_generator,
-                steps_per_epoch=2000 // batch_size,
-                epochs=10,
+                steps_per_epoch=1000 // batch_size,
+                epochs=5,
                 validation_data=validation_generator,
-                validation_steps=2000 // batch_size)
+                validation_steps=1000 // batch_size)
         model.save_weights('model/'+model_type+'.ml')  # always save your weights after training or during training
 
 if __name__ == "__main__":
