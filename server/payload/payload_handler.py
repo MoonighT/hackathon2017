@@ -69,7 +69,7 @@ def show_suggestions_for_occasion(bot_client, user_id, occasion):
 	def _show_wardrobe_suggestion(suggestion):
 		return {
 			"title": "Top from your wardrobe",
-			"subtitle": "You can select this as your top from your wardrobe",
+			"subtitle": "You can select this as your %s from your wardrobe" % ("top" if suggestion["category"] == ImageCategory.CAT_TOP else "bottom"),
 			"image_url": files.get_file_url(suggestion["path"]),
 		}
 
