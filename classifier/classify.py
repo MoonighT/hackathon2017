@@ -102,11 +102,11 @@ def train(model_type, image_size):
         model.optimizer.lr = 0.001
         model.fit_generator(
                 train_generator,
-                steps_per_epoch=1000 // batch_size,
-                epochs=5,
+                steps_per_epoch=2000 // batch_size,
+                epochs=2,
                 validation_data=validation_generator,
-                validation_steps=1000 // batch_size)
+                validation_steps=2000 // batch_size)
         model.save_weights('model/'+model_type+'.ml')  # always save your weights after training or during training
 
 if __name__ == "__main__":
-        train("formal", OCASSION_IMAGE_SIZE)
+        train("top_formal", OCASSION_IMAGE_SIZE)
