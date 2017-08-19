@@ -47,15 +47,15 @@ def make_category_model():
 
 def make_occursion_model():
     model = Sequential([Lambda(norm_input, input_shape=(OCASSION_IMAGE_SIZE,OCASSION_IMAGE_SIZE,3))])
-    ConvBlock(model,2,32)
-    ConvBlock(model,2,64)
+    ConvBlock(model,2,4)
+    ConvBlock(model,2,8)
     # ConvBlock(model,2,64)
     # ConvBlock(model,2,64)
 
     model.add(Flatten())  # this converts our 3D feature maps to 1D feature vectors
-    model.add(Dense(64))
-    model.add(Activation('relu'))
-    model.add(Dropout(0.2))
+    #model.add(Dense(16))
+    #model.add(Activation('relu'))
+    model.add(Dropout(0.5))
     #model.add(Dense(4))
     #model.add(Activation('softmax'))
     model.add(Dense(OCASSION_CLASS_COUNT, activation='softmax'))

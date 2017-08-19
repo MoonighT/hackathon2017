@@ -8,6 +8,9 @@ from PIL import Image
 IS_BOTTOM = 0
 IS_TOP = 1
 
+IS_BEACH = 0
+IS_FORMAL = 1
+
 BOTTOM_CASUAL = 0
 BOTTOM_FORMAL = 1
 TOP_CASUAL = 2
@@ -62,7 +65,7 @@ def predict_occursion(image_path, gender):
 def test():
     #imageNames = ['data/test/1.jpg', 'data/test/2.jpg', 'data/test/3.jpg', 'data/test/6.jpg', 'data/test/5.jpg']
     for i in range(38):
-        imageName = 'data/test/'+str(i+1)+'.jpg'
+        imageName = 'data/test/'+str(i)+'.jpg'
         c, out = predict_occursion(imageName, 'male')
         print c, out
 

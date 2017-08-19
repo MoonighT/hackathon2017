@@ -15,6 +15,7 @@ CAT_TO_NAME = {
 	ImageCategory.CAT_BOTTOM: "Legwear"
 }
 
+
 class DirectoryType(object):
 	DIR_TEMP = "temp"
 	DIR_TOP = "top"
@@ -35,10 +36,9 @@ class Scenario(object):
 	INTERVIEW = 1
 	PARTY = 2
 	WEDDING = 3
-	SPORTS = 4
 	DATE_NIGHT = 5
 	HACKATHON = 6
-	PRESENTATION = 7	
+	PRESENTATION = 7
 
 
 SCENARIO_DETAILS = {
@@ -59,12 +59,8 @@ SCENARIO_DETAILS = {
 	},
 	Scenario.PRESENTATION: {
 		"title": "Presentation",
- 		"subtitle": "Impress the audience with some smart outfits? You should never miss these suggestions!",
+		"subtitle": "Impress the audience with some smart outfits? You should never miss these suggestions!",
 		"image_url": "https://cdn2.hubspot.net/hubfs/580101/How%20to%20create%20a%20winning%20presentation-367141-edited.jpg",
-	Scenario.SPORTS: {
-		"title": "Sports",
-		"subtitle": "Go for some exercise? You should never miss these suggestions!",
-		"image_url": "://cdn2.hubspot.net/hubfs/580101/How%20to%20create%20a%20winning%20presentation-367141-edited.jpg",
 	},
 	Scenario.DATE_NIGHT: {
 		"title": "Date Night",
