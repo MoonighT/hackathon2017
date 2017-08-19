@@ -21,9 +21,11 @@ def get_image_category_probabilities(image_path):
 		ImageCategory.CAT_BOTTOM: bottom_prob
 	}
 
-def get_image_occasion_probability(image_path, gender, scenario):
+def get_image_occasion_probability(image_path, gender, scenario, istop):
 	gender = 'male'
 	c, prob = predict.predict_occursion(image_path, gender)
+        if !istop:
+            c, prob = predict.predict_occursion_bottom(image_path, gender)
 	result = 0.0
 	occasion = Occasion.CASUAL
 	if scenario in [Scenario.INTERVIEW, Scenario.WEDDING, Scenario.DATE_NIGHT, Scenario.PRESENTATION]:

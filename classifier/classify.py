@@ -47,8 +47,11 @@ def make_category_model():
 
 def make_occursion_model():
     model = Sequential([Lambda(norm_input, input_shape=(OCASSION_IMAGE_SIZE,OCASSION_IMAGE_SIZE,3))])
-    ConvBlock(model,2,32)
-    ConvBlock(model,2,32)
+    #ConvBlock(model,2,32)
+    #ConvBlock(model,2,32)
+    ConvBlock(model,2,4)
+    ConvBlock(model,2,8)
+
     # ConvBlock(model,2,64)
     # ConvBlock(model,2,64)
 

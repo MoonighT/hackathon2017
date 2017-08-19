@@ -132,7 +132,7 @@ def get_suggestions_for_occasion(user_id, occasion):
 	bottom_suggest = []
 	for is_top, file in all_files:
 		file_dir = misc.get_file_directory(user_id, DirectoryType.DIR_TOP if is_top else DirectoryType.DIR_BOTTOM, file)
-		probability = classification_manager.get_image_occasion_probability(file_dir, 'male', occasion)
+		probability = classification_manager.get_image_occasion_probability(file_dir, 'male', occasion, is_top)
 		if probability > 0.6:
 			suggestion_list = top_suggest if is_top else bottom_suggest
 			suggestion_list.append({
